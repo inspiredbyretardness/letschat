@@ -1,0 +1,5 @@
+Add forget password - high
+Add fuction to make any other participant as admin when existing admin leaves the group - medium
+add fuctionality to make other memebers as admins - low
+toast message when leaving members
+add screen to show a message when no chats are present
