@@ -20,6 +20,7 @@ const Login = () => {
   const toast = useToast();
   const history = useHistory();
   const handleClick = () => setShow(!Show);
+
   const submitHandler = async () => {
     setPicLoading(true);
     if (!email || !password) {
@@ -47,7 +48,7 @@ const Login = () => {
         },
         config
       );
-
+      console.log(data);
       toast({
         title: "Login Success!!",
         status: "success",
@@ -56,11 +57,11 @@ const Login = () => {
         position: "bottom",
       });
       localStorage.setItem("userinfo", JSON.stringify(data));
-      setPicLoading(false);
       history.push("/chats");
+      setPicLoading(false);
     } catch (error) {
       toast({
-        title: "Password does not match",
+        title: error,
         status: "warning",
         duration: 5000,
         isClosable: true,
