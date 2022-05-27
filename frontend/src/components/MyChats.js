@@ -1,4 +1,4 @@
-import { AddIcon, ArrowUpIcon } from "@chakra-ui/icons";
+import { AddIcon } from "@chakra-ui/icons";
 import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { ChatState } from "../Context/ChatProvider";
@@ -9,11 +9,11 @@ import GroupChatModal from "./miscellaneous/GroupChatModal";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
-
+  const [latestMessage, setLatestMessage] = useState("");
   const { user, setUser, selectedChat, setSelectedChat, chats, setChats } =
     ChatState();
   const toast = useToast();
-
+  console.log(chats);
   const fetchchat = async () => {
     try {
       const config = {
@@ -97,6 +97,19 @@ const MyChats = ({ fetchAgain }) => {
                   {!chat.isGroupChat
                     ? getSender(user, chat.users)
                     : chat.chatName}
+                  {chat.latestMessage && (
+                    <Text fontSize={"xs"}>
+                      <b>
+                        {chat.latestMessage.sender._id === user._id
+                          ? "You"
+                          : chat.latestMessage.sender.name}
+                        :
+                      </b>
+                      {chat.latestMessage.content > 50
+                        ? chat.latestMessage.content.substring(0, 51)
+                        : chat.latestMessage.content}
+                    </Text>
+                  )}
                 </Text>
               </Box>
             ))}
