@@ -67,21 +67,23 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       });
     }
   };
+
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
       try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
         setNewMessage("");
         const { data } = await api.post(
-          `api/message`,
+          "/api/message",
           {
             content: newMessage,
-            chatId: selectedChat._id,
+            chatId: selectedChat,
           },
           config
         );
@@ -89,8 +91,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         setMessages([...messages, data]);
       } catch (error) {
         toast({
-          title: error,
-          status: "warning",
+          title: "Error Occured!",
+          description: "Failed to send the Message",
+          status: "error",
           duration: 5000,
           isClosable: true,
           position: "bottom",
@@ -104,7 +107,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
-  }, [selectedChat]);
+  }, []);
 
   useEffect(() => {
     fetchMessages();
